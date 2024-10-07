@@ -109,11 +109,7 @@ export class LoadAcceleratorConfigTable extends Construct {
           Sid: 's3',
           Effect: 'Allow',
           Action: ['s3:GetObject'],
-          Resource: [
-            `arn:${cdk.Stack.of(this).partition}:s3:::cdk-accel-assets-${cdk.Stack.of(this).account}-${
-              cdk.Stack.of(this).region
-            }/*`,
-          ],
+          Resource: [`arn:${cdk.Stack.of(this).partition}:s3:::${props.configS3Bucket}/*`],
         },
         {
           Sid: 'cloudFormation',

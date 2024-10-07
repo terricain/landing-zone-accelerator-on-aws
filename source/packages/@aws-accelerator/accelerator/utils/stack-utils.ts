@@ -70,14 +70,9 @@ function getStackSynthesizer(
   stage: string | undefined = undefined,
 ) {
   const customDeploymentRole = props.globalConfig.cdkOptions?.customDeploymentRole;
-  //const managementAccountId = props.accountsConfig.getManagementAccountId();
-  const managementAccountId = props.pipelineAccountId;
   const centralizeBuckets =
     props.globalConfig.centralizeCdkBuckets?.enable || props.globalConfig.cdkOptions?.centralizeBuckets;
-  const fileAssetBucketName = centralizeBuckets ? `cdk-accel-assets-${managementAccountId}-${region}` : undefined;
-
-  logger.info(`asset bucket name: ${fileAssetBucketName} pipeline: ${props.pipelineAccountId}`);
-
+  const fileAssetBucketName = centralizeBuckets ? `cdk-accel-assets-${props.pipelineAccountId}-${region}` : undefined;
   const bucketPrefix = centralizeBuckets ? `${accountId}/` : undefined;
   if (customDeploymentRole && !isBeforeBootstrapStage(stage)) {
     logger.info(
@@ -130,11 +125,11 @@ function getAseaStackSynthesizer(props: {
   roleName?: string;
 }) {
   const { accountId, region, qualifier, roleName, accelProps } = props;
-  //const managementAccountId = accelProps.accountsConfig.getManagementAccountId();
-  const managementAccountId = accelProps.pipelineAccountId;
   const centralizeBuckets =
     accelProps.globalConfig.centralizeCdkBuckets?.enable || accelProps.globalConfig.cdkOptions?.centralizeBuckets;
-  const fileAssetsBucketName = centralizeBuckets ? `cdk-accel-assets-${managementAccountId}-${region}` : undefined;
+  const fileAssetsBucketName = centralizeBuckets
+    ? `cdk-accel-assets-${accelProps.pipelineAccountId}-${region}`
+    : undefined;
   const bucketPrefix = `${accountId}/`;
 
   if (accelProps.globalConfig.cdkOptions?.useManagementAccessRole) {
